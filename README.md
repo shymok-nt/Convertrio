@@ -27,7 +27,6 @@ npm run preview
 - PNG, JPG ve WEBP görseller arasında tamamen istemci tarafında dönüşüm
 - SVG kaynak görsellerini PNG, JPG veya WEBP'ye dönüştürme
 - İlerleme durumu (işlem aşamalarına dayalı) ve biten çıktıyı indirme
-- Herkese açık URL'lerden CORS izin veriyorsa dosya indirme
 - SSS, formatlar ve gizlilik bilgileri
 
 ## Sınırlar ve dürüst davranış
@@ -35,7 +34,7 @@ npm run preview
 - PDF, DOCX, XLSX, MP3 ve MP4 **henüz dönüştürülmez**. Seçim ekranında bu formatlar açıkça yakında olarak belirtilir.
 - Bulut depolama entegrasyonları henüz sunulmuyor.
 - Herkese açık bir Convertrio API sunulmamaktadır.
-- Yerel görsel dönüşümleri sunucuya gönderilmez. URL ekleme seçeneği, kullanıcı tarafından verilen uzak sunucuyla tarayıcıdan iletişim kurar ve CORS'a bağlıdır.
+- Yerel görsel dönüşümleri sunucuya gönderilmez.
 - 2 GB dosya sınırı seçme aşamasında kontrol edilir; tarayıcı belleği / piksel sınırları nedeniyle daha küçük görseller de başarısız olabilir.
 - Çıktı PNG/JPG/WEBP; JPG şeffaf arka planı beyaza dönüştürür.
 - Tarayıcıda dosya işlemeye ilişkin performans ve bellek testleri henüz otomatik yapılmamıştır.
