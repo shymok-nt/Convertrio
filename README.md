@@ -21,7 +21,7 @@ npm run build
 
 1. PNG, JPG veya WEBP görsellerinizi seçin veya sürükleyip bırakın (dosya başına en fazla 20 MB).
 2. **Arka planı kaldır** butonuna basın. İlk kullanımda WASM ve AI model dosyaları internetten indirilir.
-3. Orijinal/sonuç önizlemesini kontrol edin ve şeffaf PNG dosyasını indirin.
+3. Orijinal/sonuç önizlemesini kontrol edin. Gerekirse **Kenar temizliği** kaydırıcısıyla kalan hafif izleri temizleyin, ardından şeffaf PNG'yi indirin.
 
 Birden fazla görsel sırayla işlenebilir. İşlem sırasında dosya kaldırma/temizleme kilitlenir.
 
@@ -30,9 +30,9 @@ Birden fazla görsel sırayla işlenebilir. İşlem sırasında dosya kaldırma/
 - React 19 + Vite 6 + CSS
 - [IMG.LY background-removal](https://github.com/imgly/background-removal-js) v1.7.0 ve ONNX Runtime Web
 - İşlem istemcinin tarayıcısında yapılır; görsel sunucuya yüklenmez.
-- Model ve WASM dosyaları ilk kullanımda IMG.LY CDN'inden alınır. Sonraki kullanımlar önbelleğe bağlıdır.
+- Daha yüksek kalite için `large` (isnet) modeli kullanılır; ilk kullanımda model/WASM dosyaları IMG.LY CDN'inden indirilir. Bu işlem daha fazla bellek ve indirme gerektirir. Sonraki kullanımlar önbelleğe bağlıdır.
 - İlk indirme onlarca MB olabilir. Bellek veya tarayıcı uyumluluğu nedeniyle bazı görseller hata verebilir.
-- PNG saydamlığını korur; kesimin kalitesi AI modeline ve görsele göre değişir.
+- PNG saydamlığını korur; kesimin kalitesi AI modeline ve görsele göre değişir. Kenar temizliği, AI sonucunun düşük alfa değerlerine müdahale eder ve saç gibi ince ayrıntıları da silebilir.\n- Yenileme veya sayfadan ayrılma durumunda yüklenen dosyalar uygulama belleğinden temizlenir.
 
 ## Lisans uyarısı
 
