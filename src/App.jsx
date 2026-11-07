@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   ArrowDown, ArrowDownToLine, ArrowRight, Check, CheckCircle2,
-  ChevronDown, Cloud, Code2, File, FileImage, FileText, FolderOpen,
-  HelpCircle, Image, Link2, LockKeyhole, Menu, Plus, RotateCcw,
-  ShieldCheck, Sparkles, Trash2, UploadCloud, X, Zap
+  ChevronDown, FileImage, FileText, FolderOpen,
+  LockKeyhole, Menu, Plus, RotateCcw,
+  ShieldCheck, Trash2, UploadCloud, X
 } from 'lucide-react'
 
 const MAX_BYTES = 2 * 1024 ** 3
@@ -11,7 +11,7 @@ const ALL_FORMATS = ['PDF', 'PNG', 'JPG', 'WEBP', 'MP3', 'MP4', 'SVG', 'DOCX', '
 const OUTPUT_TYPES = { PNG: 'image/png', JPG: 'image/jpeg', WEBP: 'image/webp' }
 const EXT_TO_FORMAT = { jpeg: 'JPG', jpg: 'JPG', png: 'PNG', webp: 'WEBP', svg: 'SVG', pdf: 'PDF', mp3: 'MP3', mp4: 'MP4', docx: 'DOCX', xlsx: 'XLSX' }
 const faqs = [
-  { q: 'Dosyalarım gerçekten güvende mi?', a: 'Yerel cihazınızdan seçtiğiniz görsellerin dönüşümü tarayıcı içinde yapılır; Convertrio sunucusuna gönderilmez. URL ile ekleme özelliğinde tarayıcınız ilgili uzak adresten dosyayı indirmeye çalışır.' },
+  { q: 'Dosyalarım gerçekten güvende mi?', a: 'Yerel cihazınızdan seçtiğiniz görsellerin dönüşümü tarayıcı içinde yapılır; Convertrio sunucusuna gönderilmez. ' },
   { q: 'Hangi formatları dönüştürebilirim?', a: 'PNG, JPG ve WEBP görseller arasında dönüşüm yapabilir, SVG kaynaklarından PNG, JPG veya WEBP çıktısı alabilirsiniz.' },
   { q: 'Dosya boyutu sınırı var mı?', a: 'Dosya seçici 2 GB üstündeki dosyaları reddeder. Ancak tarayıcının bellek kapasitesi ve görselin piksel boyutları nedeniyle çok büyük dosyalar daha düşük sınırda başarısız olabilir.' },
   { q: 'Hesap açmam gerekiyor mu?', a: 'Hayır. Yerel görsel dönüştürme özelliğini herhangi bir hesap oluşturmadan kullanabilirsiniz.' },
@@ -79,9 +79,6 @@ function App() {
   const [error, setError] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const [openFaq, setOpenFaq] = useState(0)
-  const [urlOpen, setUrlOpen] = useState(false)
-  const [urlValue, setUrlValue] = useState('')
-  const [urlBusy, setUrlBusy] = useState(false)
   useEffect(() => { fileListRef.current = files }, [files])
   useEffect(() => () => fileListRef.current.forEach(item => { if (item.downloadUrl) URL.revokeObjectURL(item.downloadUrl) }), [])
 
@@ -119,28 +116,6 @@ function App() {
       patch(item.id, { status: 'error', progress: 0, message: err.message || 'Dönüştürülemedi.' })
     }
   }
-  async function addFromUrl(event) {
-    event.preventDefault()
-    setError('')
-    setUrlBusy(true)
-    try {
-      const url = new URL(urlValue)
-      if (!['https:', 'http:'].includes(url.protocol)) throw new Error('HTTP veya HTTPS bağlantısı kullanın.')
-      const response = await fetch(url.href)
-      if (!response.ok) throw new Error(`Dosya alınamadı (HTTP ${response.status}).`)
-      const length = Number(response.headers.get('content-length') || 0)
-      if (length > MAX_BYTES) throw new Error('Dosya 2 GB sınırını aşıyor.')
-      const blob = await response.blob()
-      if (blob.size > MAX_BYTES) throw new Error('Dosya 2 GB sınırını aşıyor.')
-      const name = decodeURIComponent(url.pathname.split('/').pop() || 'uzak-gorsel.png').replace(/[^\w.\-ğüşıöçĞÜŞİÖÇ]/g, '_')
-      addFiles([new window.File([blob], name, { type: blob.type })])
-      setUrlOpen(false)
-      setUrlValue('')
-    } catch (err) {
-      setError(err instanceof TypeError ? 'Bu bağlantı tarayıcının CORS güvenlik politikası nedeniyle açılamadı. Dosyayı indirip cihazınızdan seçin.' : (err.message || 'Bağlantı açılamadı.'))
-      setUrlOpen(false)
-    } finally { setUrlBusy(false) }
-  }
   const readyCount = files.filter(x => x.status === 'ready' && canConvert(x.file)).length
   return <div id="ust" className="site">
     <header className="header">
@@ -167,18 +142,9 @@ function App() {
             <div className="converter-head"><div><span className="live-dot" /> DOSYA DÖNÜŞTÜRÜCÜ</div><div className="card-privacy"><LockKeyhole size={13}/> TARAYICINIZDA İŞLENİR</div></div>
             <div className={`dropzone ${dragging ? 'dragging' : ''}`} onDragOver={e => {e.preventDefault();setDragging(true)}} onDragLeave={e => {if (!e.currentTarget.contains(e.relatedTarget)) setDragging(false)}} onDrop={onDrop}>
               <div className="upload-icon"><UploadCloud size={30} strokeWidth={1.7}/></div>
-              <h2>Dosyalarınızı buraya sürükleyin</h2>
-              <p>veya cihazınızdan bir dosya seçerek başlayın</p>
+              <div className="drop-copy"><h2>Dosyalarınızı buraya sürükleyin</h2><p>veya cihazınızdan bir dosya seçerek başlayın</p><div className="drop-help">Dosya başına en fazla 2 GB <span>•</span> Çoklu dosya seçimi</div></div>
               <input ref={inputRef} type="file" multiple hidden onChange={e => {addFiles(e.target.files);e.target.value=''}} aria-label="Dosya yükle"/>
               <button className="primary-button upload-button" onClick={() => inputRef.current?.click()}><FolderOpen size={18}/> Dosyaları Seçin <ArrowRight size={16}/></button>
-              <div className="drop-help">Dosya başına en fazla 2 GB <span>•</span> Çoklu dosya seçimi</div>
-            </div>
-            <div className="upload-actions">
-              <span>Başka bir yerden ekle</span>
-              <div className="source-buttons">
-                
-                <button onClick={() => {setUrlOpen(true);setError('')}}><Link2 size={15}/> URL</button>
-              </div>
             </div>
             {error && <div className="error-banner" role="alert">{error}<button aria-label="Hata mesajını kapat" onClick={() => setError('')}><X size={15}/></button></div>}
             {files.length > 0 && <div className="file-panel">
@@ -224,7 +190,6 @@ function App() {
     </main>
     <footer className="footer" id="gizlilik"><div className="container footer-main"><div><Logo small/><p>Dosyalarınız, kontrolünüzde.</p></div><div className="footer-links"><a href="#donustur">Dönüştür</a><a href="#formatlar">Formatlar</a><a href="#yardim">Yardım</a><a href="#gizlilik-bilgisi">Gizlilik</a></div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} Convertrio. Tüm hakları saklıdır.</span><span id="gizlilik-bilgisi">Yerel dönüştürme • Dosyalar sunucuya gönderilmez</span></div></footer>
 
-    {urlOpen && <div className="modal-backdrop" onClick={() => setUrlOpen(false)}><div className="modal" role="dialog" aria-modal="true" aria-labelledby="url-title" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setUrlOpen(false)} aria-label="Kapat"><X size={20}/></button><div className="modal-icon"><Link2 size={22}/></div><h2 id="url-title">URL'den dosya ekle</h2><p>Herkese açık bir dosyanın doğrudan bağlantısını girin. Bağlantının CORS erişimine izin vermesi gerekir.</p><form onSubmit={addFromUrl}><label htmlFor="file-url">Dosya bağlantısı</label><input id="file-url" type="url" value={urlValue} required placeholder="https://ornek.com/gorsel.png" onChange={e => setUrlValue(e.target.value)}/><button className="primary-button" disabled={urlBusy}>{urlBusy ? 'İndiriliyor...' : 'Dosyayı ekle'} <ArrowRight size={16}/></button></form></div></div>}
     
   </div>
 }
