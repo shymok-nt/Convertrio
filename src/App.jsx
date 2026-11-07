@@ -112,6 +112,7 @@ export default function App() {
           if (blob.type !== 'image/png' || !blob.size) throw new Error('Şeffaf PNG oluşturulamadı.')
           const outputUrl = URL.createObjectURL(blob)
           setList(old => old.map(x => x.id === item.id ? { ...x, outputUrl, state: 'done' } : x))
+          if (itemsRef.current[itemsRef.current.length - 1]?.id === item.id) setPreview('result')
           setProgress('')
         } catch (error) {
           if (mountedRef.current) {
