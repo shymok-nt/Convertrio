@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowDownToLine, Check, ImagePlus, Menu, Trash2, Upload, X } from 'lucide-react'
 
@@ -6,7 +7,6 @@ const ACCEPTED_MIME = new Set(['image/png', 'image/jpeg', 'image/webp'])
 const fileId = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
 const sizeLabel = bytes => bytes < 1048576 ? `${(bytes / 1024).toFixed(1)} KB` : `${(bytes / 1048576).toFixed(1)} MB`
 
-// Remove only near-invisible alpha residue; preserve all visible edge detail.
 async function automaticallyCleanEdges(blob) {
   const url = URL.createObjectURL(blob)
   try {
@@ -36,7 +36,7 @@ async function automaticallyCleanEdges(blob) {
       result => result ? resolve(result) : reject(new Error('PNG oluşturulamadı.')), 'image/png'
     ))
   } catch {
-    // Prefer the intact AI result if refinement cannot run on this device.
+
     return blob
   } finally {
     URL.revokeObjectURL(url)
@@ -128,7 +128,7 @@ export default function App() {
     setMessage('')
     setProgress('AI modeli hazırlanıyor…')
     try {
-      // Lazy loading keeps the landing page fast until the user starts processing.
+
       const { removeBackground } = await import('@imgly/background-removal')
       for (const item of pending) {
         if (!mountedRef.current) break
@@ -171,9 +171,7 @@ export default function App() {
   }
 
 
-  // Build an adjusted PNG from the original AI result, never from an already adjusted file.
-  // Browsers may restore an old page from their back/forward cache.
-  // Never retain uploaded photos when the page is reopened or refreshed.
+
   useEffect(() => {
     const discard = () => {
       itemsRef.current.forEach(item => {
@@ -199,6 +197,10 @@ export default function App() {
   const latest = items[items.length - 1]
 
   return <div className="site" id="ust">
+    <Helmet>
+      <title>ClearPix | Ücretsiz AI Arka Plan Silici</title>
+      <meta name="description" content="ClearPix ile PNG, JPG ve WEBP görsellerinizin arka planını tarayıcınızda kaldırın ve şeffaf PNG olarak indirin. Hesap gerekmez." />
+    </Helmet>
     <header className="header">
       <div className="container header-content">
         <Brand/>
