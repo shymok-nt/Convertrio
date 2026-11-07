@@ -1,48 +1,45 @@
 # Convertrio
 
-Modern, responsive, tarayıcı içinde çalışan dosya dönüştürme web uygulaması.
+Tek sayfalık, Türkçe, responsive dosya dönüştürücü arayüzü.
 
-## Yerel geliştirme
+## Çalıştırma
 
-Gereksinim: Node.js 20.19+ (veya 22.12+) ve npm.
+Node.js 20.19+ veya 22.12+ gerekir.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Vite terminalde bir yerel adres gösterir (genellikle http://localhost:5173).
-
-## Üretim derlemesi
+Üretim derlemesi:
 
 ```bash
 npm run build
-npm run preview
 ```
 
-## İlk sürümde çalışanlar
+## Bu sürümde gerçekten desteklenen dönüşümler
 
-- Responsive React landing page ve SVG Convertrio logosu
-- Dosya seçme, sürükle/bırak, çoklu dosya kuyruğu, kaldırma
-- PNG, JPG ve WEBP görseller arasında tamamen istemci tarafında dönüşüm
-- SVG kaynak görsellerini PNG, JPG veya WEBP'ye dönüştürme
-- İlerleme durumu (işlem aşamalarına dayalı) ve biten çıktıyı indirme
-- SSS, formatlar ve gizlilik bilgileri
+- PNG → JPG veya WEBP
+- JPG/JPEG → PNG veya WEBP
+- WEBP → PNG veya JPG
+- SVG → PNG, JPG veya WEBP
+- Aynı formatı yeniden dışa aktarma da mümkündür.
+- Birden fazla dosya sırayla dönüştürülür.
+- İndirme tamamlandığında dosya tarayıcı tarafından kaydedilebilir.
 
-## Sınırlar ve dürüst davranış
+İşlem Canvas API ile tamamen tarayıcıda gerçekleşir. JPG saydamlığını desteklemediği için saydam alanlar beyaza dönüşür.
 
-- PDF, DOCX, XLSX, MP3 ve MP4 **henüz dönüştürülmez**. Seçim ekranında bu formatlar açıkça yakında olarak belirtilir.
-- Bulut depolama entegrasyonları henüz sunulmuyor.
-- Herkese açık bir Convertrio API sunulmamaktadır.
-- Yerel görsel dönüşümleri sunucuya gönderilmez.
-- 2 GB dosya sınırı seçme aşamasında kontrol edilir; tarayıcı belleği / piksel sınırları nedeniyle daha küçük görseller de başarısız olabilir.
-- Çıktı PNG/JPG/WEBP; JPG şeffaf arka planı beyaza dönüştürür.
-- Tarayıcıda dosya işlemeye ilişkin performans ve bellek testleri henüz otomatik yapılmamıştır.
+## Henüz desteklenmeyenler
+
+Video, ses, belge (PDF/DOCX/XLSX), e-kitap ve arşiv dönüşümleri **henüz çalışmıyor**. Kullanıcıya bu formatlar için sahte işlem/indirme gösterilmez; desteklenmeyen giriş dosyaları açıklayıcı mesajla reddedilir.
+
+## Dikkat edilmesi gerekenler
+
+- 2 GB üzerindeki dosyalar reddedilir; tarayıcı bellek/piksel limitleri çok daha küçük dosyaları etkileyebilir.
+- Tarayıcınız ilgili kaynak görseli açamıyorsa veya çıktı biçimini desteklemiyorsa işlem açıklayıcı hatayla durur.
+- Görseller sunucuya yüklenmez.
+- GitHub Actions üretim derlemesini kontrol eder; bu, tüm tarayıcı ve formatlarda uçtan uca fonksiyon testi yerine geçmez.
 
 ## Teknoloji
 
-React 19 · Vite 6 · JavaScript · CSS · Lucide React
-
-## Sonraki aşama
-
-Gerçek PDF ve belge dönüştürme yöntemlerini araştırıp tarayıcıda çalışabilen motorları kademeli eklemek; sonrasında ses/video desteği ve erişilebilirlik testleri.
+React + Vite + CSS + Lucide React. Plus Jakarta Sans tipografi. Convertrio logo görseli kullanıcı tarafından sağlandı.
