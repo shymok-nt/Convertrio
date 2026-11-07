@@ -122,3 +122,21 @@ a{color:inherit;text-decoration:none}
 .queue-footer{flex-wrap:wrap}
 .queue-footer span{flex:1;min-width:0;overflow-wrap:anywhere}
 @media(max-width:680px){.preview-panel{margin-top:20px;padding-top:18px}.preview-canvas{min-height:180px;max-height:320px}.preview-canvas img{max-height:290px}.preview-tabs button{padding:0 10px}}
+
+/* Preview replaces the upload drop area as soon as files are selected. */
+.selected-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.selected-toolbar strong{font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis}
+.change-file{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 15px;border:1px solid #ebd9db;border-radius:9px;background:white;color:#b3122b;font-size:12px;font-weight:700}
+.change-file:hover{background:#fdf5f6}
+.selected-toolbar+.preview-panel,.selected-toolbar~.preview-panel{margin-top:12px}
+.preview-panel{border-top:0;padding-top:0;margin-top:12px}
+.preview-header{margin-bottom:12px}
+.preview-header h2{font-size:12px;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#5b4549}
+.preview-canvas{min-height:220px;max-height:350px}
+.preview-canvas img{max-height:320px}
+.preview-action{display:flex;align-items:center;gap:17px;flex-wrap:wrap;margin-top:17px}
+.preview-action .convert-button{min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.preview-action span{font-size:12px;color:#5b4549;flex:1;overflow-wrap:anywhere}
+.preview-download{text-decoration:none}
+.preview-action .preview-download:hover{color:white}
+@media(max-width:680px){.selected-toolbar{gap:8px}.preview-canvas{min-height:170px;max-height:290px}.preview-canvas img{max-height:260px}.preview-action{flex-direction:column;align-items:stretch}.preview-action .convert-button{width:100%}.preview-header h2{max-width:50%}}
