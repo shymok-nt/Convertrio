@@ -54,3 +54,39 @@
  .dropzone .upload-button{width:100%;max-width:300px;min-height:47px}
  .file-list{grid-template-columns:1fr}
 }
+
+/* Minimal converter redesign */
+.hero{padding-top:82px;background-image:none}
+.hero:after{background:linear-gradient(to bottom,rgba(248,250,252,.25),#f8fafc 95%)}
+.hero-glow{display:none}
+.hero h1{font-size:clamp(35px,4.6vw,58px);line-height:1.17;letter-spacing:-2.5px;margin:0 auto 16px;font-weight:750}
+.hero-description{margin-bottom:40px}
+.converter-card{background:#fff;color:#0f172a;border:1px solid #e2e8f0;border-radius:13px;padding:12px;box-shadow:0 12px 32px -24px rgba(15,23,42,.24)}
+.dropzone{background:#fff;border:1.5px dashed #cbd5e1;border-radius:9px;min-height:160px;padding:29px 36px;gap:24px;transition:background .15s,border-color .15s}
+.dropzone.dragging{background:#fff5f5;border-color:#ef4444}
+.upload-icon{background:#f8fafc;border:1px solid #e2e8f0;color:#475569;border-radius:11px;width:56px;height:56px;flex-basis:56px}
+.drop-copy h2{font-size:19px;font-weight:700;letter-spacing:-.6px;color:#0f172a;margin-bottom:7px}
+.drop-copy p{color:#64748b;font-size:12px}
+.drop-copy .drop-help{color:#94a3b8;font-size:10px;margin-top:11px}
+.drop-help span{color:#cbd5e1}
+.dropzone .upload-button{background:#e53935;border:1px solid #e53935;border-radius:7px;box-shadow:none;min-height:45px;min-width:148px;font-size:12px;font-weight:650}
+.dropzone .upload-button:hover{background:#c92d2a;filter:none}
+.file-panel{border-top:1px solid #e2e8f0;padding:20px 13px}
+.file-panel-heading strong{color:#0f172a}
+.file-panel-heading>button{color:#64748b}
+.file-item{background:#fff;border-color:#e2e8f0}
+.file-info strong{color:#0f172a}
+.file-info span,.file-note{color:#64748b}
+.file-icon{background:#fef2f2;color:#dc2626}
+.file-arrow,.remove-button{color:#94a3b8}
+.file-controls select{background:#fff;color:#0f172a;border-color:#cbd5e1}
+.status{color:#64748b}
+.status.done{color:#15803d}
+.status.converting{color:#b45309}
+.status.error,.file-error{color:#b91c1c}
+.progress-track{background:#e2e8f0}
+.file-count{background:#f1f5f9;color:#64748b}
+.add-another{color:#dc2626}
+.hero-assurances{margin-top:25px}
+@media(max-width:900px){.dropzone{gap:17px;padding:24px}.dropzone .upload-button{min-width:135px}}
+@media(max-width:680px){.hero{padding-top:59px}.hero h1{font-size:clamp(32px,8.2vw,42px);letter-spacing:-1.7px}.hero-description{margin-bottom:29px}.converter-card{padding:9px}.dropzone{padding:29px 19px;gap:15px}.drop-copy h2{font-size:17px}.dropzone .upload-button{max-width:260px;width:100%;min-height:45px}.file-panel{padding:18px 4px}}
