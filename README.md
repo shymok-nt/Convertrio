@@ -1,6 +1,6 @@
-# Convertrio — Tarayıcıda Arka Plan Silici
+# ClearPix — Tarayıcıda Arka Plan Silici
 
-Convertrio, görsellerin arka planını tarayıcı içinde AI ile kaldıran, Türkçe, responsive, tek sayfalık bir React uygulamasıdır.
+ClearPix, görsellerin arka planını tarayıcı içinde AI ile kaldıran, Türkçe, responsive, tek sayfalık bir React uygulamasıdır.
 
 ## Kurulum
 
@@ -32,7 +32,7 @@ Birden fazla görsel sırayla işlenebilir. İşlem sırasında dosya kaldırma/
 - İşlem istemcinin tarayıcısında yapılır; görsel sunucuya yüklenmez.
 - Daha yüksek kalite için `large` (isnet) modeli kullanılır; ilk kullanımda model/WASM dosyaları IMG.LY CDN'inden indirilir. Bu işlem daha fazla bellek ve indirme gerektirir. Sonraki kullanımlar önbelleğe bağlıdır.
 - İlk indirme onlarca MB olabilir. Bellek veya tarayıcı uyumluluğu nedeniyle bazı görseller hata verebilir.
-- PNG saydamlığını korur; kesimin kalitesi AI modeline ve görsele göre değişir. Kenar temizliği, AI sonucunun düşük alfa değerlerine müdahale eder ve saç gibi ince ayrıntıları da silebilir.\n- Yenileme veya sayfadan ayrılma durumunda yüklenen dosyalar uygulama belleğinden temizlenir.
+- PNG saydamlığını korur; kesimin kalitesi AI modeline ve görsele göre değişir. Otomatik kenar temizliği, AI sonucunun düşük alfa değerlerine müdahale eder ve saç gibi ince ayrıntıları da silebilir.\n- Yenileme veya sayfadan ayrılma durumunda yüklenen dosyalar uygulama belleğinden temizlenir.
 
 ## Lisans uyarısı
 
@@ -41,3 +41,7 @@ Kullanılan `@imgly/background-removal` kütüphanesi **GNU AGPL** lisansı alt�
 ## Doğrulama
 
 GitHub Actions, Vite üretim derlemesini denetler. Üretim derlemesinin geçmesi, AI modelinin tüm tarayıcılarda gerçekten başarılı çalıştığını kanıtlamaz; gerçek dosyalarla tarayıcı üzerinde ayrıca test yapılmalıdır.
+
+## Marka
+
+Sitenin adı **ClearPix** olarak güncellendi. Logo kullanıcı tarafından gönderilen görselden hazırlanmıştır. GitHub depo adresi geçmiş bağlantıların korunması için halen `shymok-nt/Convertrio` olarak kalır.
