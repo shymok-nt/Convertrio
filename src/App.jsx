@@ -44,9 +44,9 @@ async function automaticallyCleanEdges(blob) {
 }
 
 function Brand({ footer = false }) {
-  return <a className={`brand ${footer ? 'brand-footer' : ''}`} href="#ust" aria-label="Convertrio ana sayfa">
-    <img src="/convertrio-logo.webp" alt="" className="brand-image"/>
-    <span>convert<strong>rio</strong></span>
+  return <a className={`brand ${footer ? 'brand-footer' : ''}`} href="#ust" aria-label="ClearPix ana sayfa">
+    <img src="/clearpix-logo.webp" alt="" className="brand-image"/>
+    <span>Clear<strong>Pix</strong></span>
   </a>
 }
 
@@ -268,6 +268,6 @@ export default function App() {
       </section>
       <section className="help" id="yardim"><div className="container help-content"><strong>Bilmeniz gerekenler</strong><p>PNG, JPG ve WEBP dosyaları desteklenir. İlk işlemde AI modeli indirilir; indirme süresi bağlantınıza bağlıdır. Model daha sonra tarayıcı önbelleğinden kullanılabilir. Sonuç kalitesi görsele göre değişebilir.</p><p id="gizlilik">Gizlilik: Görselleriniz işlem için sunucuya yüklenmez. AI model dosyaları ilk kullanımda internet üzerinden indirilir.</p><p id="sartlar">Kullanım: Dosya başına 20 MB sınırı vardır. Büyük görseller, cihazın bellek ve işlem gücü sınırlarına takılabilir.</p><p>Arka plan kaldırma teknolojisi IMG.LY'nin AGPL lisanslı açık kaynak yazılımını kullanır.</p></div></section>
     </main>
-    <footer className="footer"><div className="container footer-inner"><Brand footer/><div className="footer-links"><a href="#gizlilik">Gizlilik</a><a href="#sartlar">Şartlar</a><a href="#yardim">Yardım</a><a href="https://github.com/shymok-nt/Convertrio/issues" target="_blank" rel="noreferrer">İletişim</a></div></div></footer>
+    <footer className="footer"><div className="container footer-inner"><Brand footer/><div className="footer-links"><a href="#gizlilik">Gizlilik</a><a href="#sartlar">Şartlar</a><a href="#yardim">Yardım</a><a href="https://github.com/shymok-nt/ClearPix/issues" target="_blank" rel="noreferrer">İletişim</a></div></div></footer>
   </div>
 }
