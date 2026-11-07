@@ -169,8 +169,8 @@ export default function App() {
           </div>
         </div>
       </section>
-      <section className="help" id="yardim"><div className="container help-content"><strong>Desteklenen dönüşümler</strong><p>PNG, JPG, WEBP ve SVG görselleri PNG, JPG veya WEBP formatına tarayıcınızda dönüştürebilirsiniz. Video, ses, belge, e-kitap ve arşiv dönüşümleri henüz sunulmuyor. Dosyalarınız sunucumuza gönderilmez.</p></div></section>
+      <section className="help" id="yardim"><div className="container help-content"><strong>Desteklenen dönüşümler</strong><p>PNG, JPG, WEBP ve SVG görselleri PNG, JPG veya WEBP formatına tarayıcınızda dönüştürebilirsiniz. Video, ses, belge, e-kitap ve arşiv dönüşümleri henüz sunulmuyor.</p><p id="gizlilik">Gizlilik: Yerel görsel dosyalarınız sunucuya yüklenmez.</p><p id="sartlar">Kullanım: 2 GB üzerindeki dosyalar kabul edilmez; tarayıcınızın bellek sınırları daha düşük olabilir.</p></div></section>
     </main>
-    <footer className="footer"><div className="container footer-inner"><Brand footer/><div className="footer-links"><a href="#yardim">Gizlilik</a><a href="#yardim">Şartlar</a><a href="#yardim">Yardım</a><a href="mailto:">İletişim</a></div></div></footer>
+    <footer className="footer"><div className="container footer-inner"><Brand footer/><div className="footer-links"><a href="#gizlilik">Gizlilik</a><a href="#sartlar">Şartlar</a><a href="#yardim">Yardım</a><a href="https://github.com/shymok-nt/Convertrio/issues" target="_blank" rel="noreferrer">İletişim</a></div></div></footer>
   </div>
 }
