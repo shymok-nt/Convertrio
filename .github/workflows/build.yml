@@ -13,7 +13,7 @@ jobs:
           node-version: '22'
       - run: npm install --no-fund
       - run: npm run lint
+      - run: npm run test:compat
       - run: npm run build
       - name: Dependency audit
         run: npm audit --audit-level=low
-        continue-on-error: true
