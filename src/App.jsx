@@ -159,7 +159,7 @@ export default function App() {
           }
         }
       }
-    } catch (error) {
+    } catch {
       if (mountedRef.current) {
         setMessage('Arka plan silme motoru yüklenemedi. İnternet bağlantınızı kontrol edip tekrar deneyin.')
         setProgress('')
