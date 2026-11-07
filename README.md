@@ -45,3 +45,7 @@ GitHub Actions, Vite üretim derlemesini denetler. Üretim derlemesinin geçmesi
 ## Marka
 
 Sitenin adı **ClearPix** olarak güncellendi. Logo kullanıcı tarafından gönderilen görselden hazırlanmıştır. GitHub depo adresi geçmiş bağlantıların korunması için halen `shymok-nt/Convertrio` olarak kalır.
+
+## Marka görseli
+
+Header ve footer tek bir kullanıcı tarafından gönderilmiş ClearPix wordmark görseli kullanır (`public/clearpix-wordmark.webp`). Eski ayrı ikon ve metin kaldırıldı.
