@@ -25,5 +25,10 @@
     "eslint": "^9.39.0",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.4.0"
+  },
+  "overrides": {
+    "@imgly/background-removal": {
+      "zod": "^4.6.7"
+    }
   }
 }
