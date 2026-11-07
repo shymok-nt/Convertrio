@@ -6,6 +6,43 @@ const ACCEPTED_MIME = new Set(['image/png', 'image/jpeg', 'image/webp'])
 const fileId = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`
 const sizeLabel = bytes => bytes < 1048576 ? `${(bytes / 1024).toFixed(1)} KB` : `${(bytes / 1048576).toFixed(1)} MB`
 
+// Remove only near-invisible alpha residue; preserve all visible edge detail.
+async function automaticallyCleanEdges(blob) {
+  const url = URL.createObjectURL(blob)
+  try {
+    const image = new Image()
+    await new Promise((resolve, reject) => {
+      image.onload = resolve
+      image.onerror = () => reject(new Error('Önizleme görseli açılamadı.'))
+      image.src = url
+    })
+    const canvas = document.createElement('canvas')
+    canvas.width = image.naturalWidth
+    canvas.height = image.naturalHeight
+    const context = canvas.getContext('2d', { willReadFrequently: true })
+    if (!context) return blob
+    context.drawImage(image, 0, 0)
+    const data = context.getImageData(0, 0, canvas.width, canvas.height)
+    let modified = false
+    for (let i = 3; i < data.data.length; i += 4) {
+      if (data.data[i] > 0 && data.data[i] <= 7) {
+        data.data[i] = 0
+        modified = true
+      }
+    }
+    if (!modified) return blob
+    context.putImageData(data, 0, 0)
+    return await new Promise((resolve, reject) => canvas.toBlob(
+      result => result ? resolve(result) : reject(new Error('PNG oluşturulamadı.')), 'image/png'
+    ))
+  } catch {
+    // Prefer the intact AI result if refinement cannot run on this device.
+    return blob
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
+
 function Brand({ footer = false }) {
   return <a className={`brand ${footer ? 'brand-footer' : ''}`} href="#ust" aria-label="Convertrio ana sayfa">
     <img src="/convertrio-logo.webp" alt="" className="brand-image"/>
@@ -25,7 +62,6 @@ export default function App() {
   const [progress, setProgress] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const [preview, setPreview] = useState('result')
-  const [edgeStrength, setEdgeStrength] = useState(20)
 
   const setList = updater => {
     const next = typeof updater === 'function' ? updater(itemsRef.current) : updater
@@ -53,7 +89,7 @@ export default function App() {
       if (file.size > MAX_FILE_SIZE) { errors.push(`${file.name}: 20 MB sınırını aşıyor.`); continue }
       next.push({
         id: fileId(), file, originalUrl: URL.createObjectURL(file),
-        outputUrl: null, rawBlob: null, state: 'ready', error: ''
+        outputUrl: null, state: 'ready', error: ''
       })
     }
     setMessage(errors.join(' '))
@@ -111,8 +147,10 @@ export default function App() {
           })
           if (!mountedRef.current) break
           if (blob.type !== 'image/png' || !blob.size) throw new Error('Şeffaf PNG oluşturulamadı.')
-          const outputUrl = URL.createObjectURL(blob)
-          setList(old => old.map(x => x.id === item.id ? { ...x, outputUrl, rawBlob: blob, state: 'done' } : x))
+          const cleanedBlob = await automaticallyCleanEdges(blob)
+          if (!mountedRef.current) break
+          const outputUrl = URL.createObjectURL(cleanedBlob)
+          setList(old => old.map(x => x.id === item.id ? { ...x, outputUrl, state: 'done' } : x))
           if (itemsRef.current[itemsRef.current.length - 1]?.id === item.id) setPreview('result')
           setProgress('')
         } catch (error) {
@@ -135,52 +173,6 @@ export default function App() {
 
 
   // Build an adjusted PNG from the original AI result, never from an already adjusted file.
-  async function cleanEdges(item) {
-    if (busyRef.current || !item?.rawBlob) return
-    busyRef.current = true
-    setWorking(true)
-    setProgress('Kenarlar temizleniyor…')
-    let tempUrl
-    try {
-      tempUrl = URL.createObjectURL(item.rawBlob)
-      const img = new Image()
-      await new Promise((resolve, reject) => {
-        img.onload = resolve
-        img.onerror = () => reject(new Error('Sonuç görseli açılamadı.'))
-        img.src = tempUrl
-      })
-      const canvas = document.createElement('canvas')
-      canvas.width = img.naturalWidth
-      canvas.height = img.naturalHeight
-      const context = canvas.getContext('2d', { willReadFrequently: true })
-      if (!context) throw new Error('Görsel işlenemedi.')
-      context.drawImage(img, 0, 0)
-      const pixels = context.getImageData(0, 0, canvas.width, canvas.height)
-      const threshold = Math.round(edgeStrength * 1.8)
-      for (let i = 3; i < pixels.data.length; i += 4) {
-        const a = pixels.data[i]
-        pixels.data[i] = a <= threshold ? 0 : Math.round((a - threshold) * 255 / (255 - threshold))
-      }
-      context.putImageData(pixels, 0, 0)
-      const result = await new Promise((resolve, reject) => canvas.toBlob(
-        blob => blob ? resolve(blob) : reject(new Error('PNG oluşturulamadı.')), 'image/png'
-      ))
-      if (!mountedRef.current) return
-      const outputUrl = URL.createObjectURL(result)
-      const current = itemsRef.current.find(x => x.id === item.id)
-      if (current?.outputUrl) URL.revokeObjectURL(current.outputUrl)
-      setList(old => old.map(x => x.id === item.id ? { ...x, outputUrl } : x))
-      setPreview('result')
-      setProgress('')
-    } catch (error) {
-      if (mountedRef.current) setProgress(error?.message || 'Kenarlar temizlenemedi.')
-    } finally {
-      if (tempUrl) URL.revokeObjectURL(tempUrl)
-      busyRef.current = false
-      if (mountedRef.current) setWorking(false)
-    }
-  }
-
   // Browsers may restore an old page from their back/forward cache.
   // Never retain uploaded photos when the page is reopened or refreshed.
   useEffect(() => {
@@ -243,11 +235,6 @@ export default function App() {
               {latest && <div className="preview-panel" id="gorsel-onizleme">
                 <div className="preview-header"><h2>{latest.file.name}</h2><div className="preview-tabs" role="group" aria-label="Görsel önizleme"><button type="button" className={preview === 'original' ? 'active' : ''} onClick={() => setPreview('original')}>Orijinal</button><button type="button" className={preview === 'result' ? 'active' : ''} onClick={() => setPreview('result')} disabled={!latest.outputUrl}>Sonuç</button></div></div>
                 <div className="preview-canvas"><img src={preview === 'result' && latest.outputUrl ? latest.outputUrl : latest.originalUrl} alt={preview === 'result' && latest.outputUrl ? 'Arka planı kaldırılmış görsel' : 'Orijinal görsel'}/></div>
-                {latest.rawBlob && <div className="edge-controls">
-                  <label htmlFor="edge-strength">Kenar temizliği <span>{edgeStrength}%</span></label>
-                  <input id="edge-strength" type="range" min="0" max="80" step="5" value={edgeStrength} disabled={working} onChange={e => setEdgeStrength(Number(e.target.value))}/>
-                  <button type="button" disabled={working} onClick={() => cleanEdges(latest)}>Kenarları temizle</button>
-                </div>}
                 <div className="preview-action">
                   {latest.outputUrl ? <a className="convert-button preview-download" href={latest.outputUrl} download={`${latest.file.name.replace(/\.[^.]+$/, '')}-arkaplan-silindi.png`}><ArrowDownToLine size={17}/> Şeffaf PNG indir</a> : <button type="button" className="convert-button" disabled={working} onClick={removeBackgrounds}>{working ? 'İşleniyor…' : 'Arka planı kaldır'}</button>}
                   <span aria-live="polite">{progress || (latest.state === 'error' ? latest.error : '')}</span>
