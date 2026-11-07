@@ -45,8 +45,7 @@ async function automaticallyCleanEdges(blob) {
 
 function Brand({ footer = false }) {
   return <a className={`brand ${footer ? 'brand-footer' : ''}`} href="#ust" aria-label="ClearPix ana sayfa">
-    <img src="/clearpix-logo.webp" alt="" className="brand-image"/>
-    <span>Clear<strong>Pix</strong></span>
+    <img src="/clearpix-wordmark.webp" alt="ClearPix" className="brand-wordmark"/>
   </a>
 }
 
