@@ -57,7 +57,7 @@ export default function App() {
     }
     setMessage(errors.join(' '))
     if (next.length) {
-      setPreview('result')
+      setPreview('original')
       setList(old => [...old, ...next])
     }
   }
@@ -93,14 +93,14 @@ export default function App() {
     setProgress('AI modeli hazırlanıyor…')
     try {
       // Lazy loading keeps the landing page fast until the user starts processing.
-      const { default: removeBackground } = await import('@imgly/background-removal')
+      const { removeBackground } = await import('@imgly/background-removal')
       for (const item of pending) {
         if (!mountedRef.current) break
         setList(old => old.map(x => x.id === item.id ? { ...x, state: 'working', error: '' } : x))
         setProgress(`${item.file.name} işleniyor…`)
         try {
           const blob = await removeBackground(item.file, {
-            model: 'isnet_quint8',
+            model: 'small',
             output: { format: 'image/png' },
             progress: (key, current, total) => {
               if (!mountedRef.current || !total) return
@@ -131,8 +131,7 @@ export default function App() {
     }
   }
 
-  const latest = [...items].reverse().find(x => x.state === 'done') || items[items.length - 1]
-  const remaining = items.filter(x => x.state !== 'done').length
+  const latest = items[items.length - 1]
 
   return <div className="site" id="ust">
     <header className="header">
@@ -151,19 +150,29 @@ export default function App() {
         <div className="container hero-inner">
           <h1>Görsellerinizin arka planını kaldırın</h1>
           <div className="converter">
+            {items.length === 0 && <div className="empty-upload">
             <div className="converter-toolbar">
               <button className="select-file" type="button" onClick={() => fileInput.current?.click()} disabled={working}><Upload size={19}/> Görsel seç</button>
               <span className="supported-label">PNG, JPG veya WEBP · En fazla 20 MB</span>
-              <input type="file" ref={fileInput} className="visually-hidden" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" multiple disabled={working} onChange={e => { addFiles(e.target.files); e.target.value = '' }}/>
             </div>
             <div className={`drop-area ${dragging ? 'dragging' : ''}`} onDragOver={e => { e.preventDefault(); if (!working) setDragging(true) }} onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget)) setDragging(false) }} onDrop={e => { e.preventDefault(); setDragging(false); if (!working) addFiles(e.dataTransfer.files) }}>
               veya görselleri buraya sürükle
             </div>
+            </div>}
+            {items.length > 0 && <div className="selected-toolbar">
+              <strong>Görsel önizleme</strong>
+              <button type="button" className="change-file" onClick={() => fileInput.current?.click()} disabled={working}><Upload size={16}/> Görsel ekle</button>
+            </div>}
+            <input type="file" ref={fileInput} className="visually-hidden" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" multiple disabled={working} onChange={e => { addFiles(e.target.files); e.target.value = '' }}/>
             {message && <p className="form-error" role="alert">{message}</p>}
             {items.length > 0 && <>
-              {latest && <div className="preview-panel">
-                <div className="preview-header"><h2>Önizleme</h2><div className="preview-tabs" role="group" aria-label="Görsel önizleme"><button type="button" className={preview === 'original' ? 'active' : ''} onClick={() => setPreview('original')}>Orijinal</button><button type="button" className={preview === 'result' ? 'active' : ''} onClick={() => setPreview('result')} disabled={!latest.outputUrl}>Sonuç</button></div></div>
+              {latest && <div className="preview-panel" id="gorsel-onizleme">
+                <div className="preview-header"><h2>{latest.file.name}</h2><div className="preview-tabs" role="group" aria-label="Görsel önizleme"><button type="button" className={preview === 'original' ? 'active' : ''} onClick={() => setPreview('original')}>Orijinal</button><button type="button" className={preview === 'result' ? 'active' : ''} onClick={() => setPreview('result')} disabled={!latest.outputUrl}>Sonuç</button></div></div>
                 <div className="preview-canvas"><img src={preview === 'result' && latest.outputUrl ? latest.outputUrl : latest.originalUrl} alt={preview === 'result' && latest.outputUrl ? 'Arka planı kaldırılmış görsel' : 'Orijinal görsel'}/></div>
+                <div className="preview-action">
+                  {latest.outputUrl ? <a className="convert-button preview-download" href={latest.outputUrl} download={`${latest.file.name.replace(/\\.[^.]+$/, '')}-arkaplan-silindi.png`}><ArrowDownToLine size={17}/> Şeffaf PNG indir</a> : <button type="button" className="convert-button" disabled={working} onClick={removeBackgrounds}>{working ? 'İşleniyor…' : 'Arka planı kaldır'}</button>}
+                  <span aria-live="polite">{progress || (latest.state === 'error' ? latest.error : '')}</span>
+                </div>
               </div>}
               <div className="queue">
                 <div className="queue-heading"><h2>Görseller <span>{items.length}</span></h2><button type="button" onClick={clearAll} disabled={working}><Trash2 size={15}/> Temizle</button></div>
@@ -174,7 +183,7 @@ export default function App() {
                   {item.outputUrl ? <a className="download-link" href={item.outputUrl} download={`${item.file.name.replace(/\.[^.]+$/, '')}-arkaplan-silindi.png`}><ArrowDownToLine size={16}/> PNG indir</a> : <button className="remove-file" type="button" aria-label={`${item.file.name} dosyasını kaldır`} onClick={() => removeItem(item.id)} disabled={working}><X size={18}/></button>}
                   {item.error && <p className="item-error">{item.error}</p>}
                 </div>)}</div>
-                <div className="queue-footer"><span aria-live="polite">{progress || `${items.length - remaining} / ${items.length} tamamlandı`}</span>{remaining > 0 && <button className="convert-button" disabled={working} onClick={removeBackgrounds}>{working ? 'İşleniyor…' : 'Arka planı kaldır'}</button>}</div>
+                
               </div>
             </>}
           </div>
