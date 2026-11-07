@@ -27,15 +27,13 @@ npm run preview
 - PNG, JPG ve WEBP görseller arasında tamamen istemci tarafında dönüşüm
 - SVG kaynak görsellerini PNG, JPG veya WEBP'ye dönüştürme
 - İlerleme durumu (işlem aşamalarına dayalı) ve biten çıktıyı indirme
-- Örnek SVG dosyası ile deneme
 - Herkese açık URL'lerden CORS izin veriyorsa dosya indirme
-- Google Drive / Dropbox için yönlendirme ve dosyayı yerel olarak seçme açıklaması
-- SSS, formatlar, gizlilik ve API bilgileri
+- SSS, formatlar ve gizlilik bilgileri
 
 ## Sınırlar ve dürüst davranış
 
 - PDF, DOCX, XLSX, MP3 ve MP4 **henüz dönüştürülmez**. Seçim ekranında bu formatlar açıkça yakında olarak belirtilir.
-- Bulut depolama servisleriyle doğrudan OAuth dosya seçicisi henüz yoktur.
+- Bulut depolama entegrasyonları henüz sunulmuyor.
 - Herkese açık bir Convertrio API sunulmamaktadır.
 - Yerel görsel dönüşümleri sunucuya gönderilmez. URL ekleme seçeneği, kullanıcı tarafından verilen uzak sunucuyla tarayıcıdan iletişim kurar ve CORS'a bağlıdır.
 - 2 GB dosya sınırı seçme aşamasında kontrol edilir; tarayıcı belleği / piksel sınırları nedeniyle daha küçük görseller de başarısız olabilir.
