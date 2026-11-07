@@ -141,16 +141,9 @@ a{color:inherit;text-decoration:none}
 .preview-action .preview-download:hover{color:white}
 @media(max-width:680px){.selected-toolbar{gap:8px}.preview-canvas{min-height:170px;max-height:290px}.preview-canvas img{max-height:260px}.preview-action{flex-direction:column;align-items:stretch}.preview-action .convert-button{width:100%}.preview-header h2{max-width:50%}}
 
-/* Plain white preview and edge refinement tools */
+/* Plain white image preview */
 .preview-canvas{
  background:#fff;
  background-image:none;
  border:1px solid #ebd9db;
 }
-.edge-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px;padding:13px 15px;background:#fbf6f6;border:1px solid #ebd9db;border-radius:10px}
-.edge-controls label{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#2a1b1d}
-.edge-controls label span{font-variant-numeric:tabular-nums;color:#5b4549;font-weight:600}
-.edge-controls input[type="range"]{flex:1;min-width:110px;accent-color:#b3122b;cursor:pointer}
-.edge-controls button{background:#fff;border:1px solid #b3122b;color:#941027;border-radius:8px;padding:0 14px;min-height:44px;font-size:12px;font-weight:700}
-.edge-controls button:hover{background:#fdf0f2}
-@media(max-width:680px){.edge-controls{flex-direction:column;align-items:stretch}.edge-controls input[type="range"]{width:100%;min-height:30px}}
