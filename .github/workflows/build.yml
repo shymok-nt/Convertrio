@@ -1,4 +1,4 @@
-name: Build
+name: Build and Quality
 on:
   push:
     branches: [main]
@@ -11,5 +11,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-audit --no-fund
+      - run: npm install --no-fund
+      - run: npm run lint
       - run: npm run build
+      - name: Dependency audit
+        run: npm audit --audit-level=low
+        continue-on-error: true
