@@ -135,16 +135,15 @@ function App() {
       <section className="hero" id="donustur">
         <div className="hero-glow hero-glow-left" /><div className="hero-glow hero-glow-right" />
         <div className="container hero-inner">
-          <div className="eyebrow"><span className="eyebrow-dot" /> DOSYALARINIZ, KONTROLÜNÜZDE <span className="eyebrow-line" /></div>
-          <h1>Dosyalarınızı dönüştürün.<br/><span className="gradient-text">Gerisini bize bırakın.</span></h1>
+          <h1>Dosyalarınızı dönüştürün.</h1>
           <p className="hero-description">Hızlı, güvenli ve zahmetsiz dosya dönüştürme.<br className="desktop-break"/> Dosyalarınız sunucuya yüklenmeden, doğrudan tarayıcınızda işlenir.</p>
           <div className="converter-card">
-            <div className="converter-head"><div><span className="live-dot" /> DOSYA DÖNÜŞTÜRÜCÜ</div><div className="card-privacy"><LockKeyhole size={13}/> TARAYICINIZDA İŞLENİR</div></div>
+            
             <div className={`dropzone ${dragging ? 'dragging' : ''}`} onDragOver={e => {e.preventDefault();setDragging(true)}} onDragLeave={e => {if (!e.currentTarget.contains(e.relatedTarget)) setDragging(false)}} onDrop={onDrop}>
-              <div className="upload-icon"><UploadCloud size={30} strokeWidth={1.7}/></div>
-              <div className="drop-copy"><h2>Dosyalarınızı buraya sürükleyin</h2><p>veya cihazınızdan bir dosya seçerek başlayın</p><div className="drop-help">Dosya başına en fazla 2 GB <span>•</span> Çoklu dosya seçimi</div></div>
+              <div className="upload-icon"><UploadCloud size={26} strokeWidth={1.6}/></div>
+              <div className="drop-copy"><h2>Dosyanızı buraya sürükleyin</h2><p>Dosyanızı seçin veya bu alana bırakın</p><div className="drop-help">Dosya başına en fazla 2 GB <span>•</span> Çoklu dosya seçimi</div></div>
               <input ref={inputRef} type="file" multiple hidden onChange={e => {addFiles(e.target.files);e.target.value=''}} aria-label="Dosya yükle"/>
-              <button className="primary-button upload-button" onClick={() => inputRef.current?.click()}><FolderOpen size={18}/> Dosyaları Seçin <ArrowRight size={16}/></button>
+              <button className="primary-button upload-button" onClick={() => inputRef.current?.click()}><FolderOpen size={17}/> Dosya seç</button>
             </div>
             {error && <div className="error-banner" role="alert">{error}<button aria-label="Hata mesajını kapat" onClick={() => setError('')}><X size={15}/></button></div>}
             {files.length > 0 && <div className="file-panel">
@@ -165,7 +164,7 @@ function App() {
               </div>)}</div>
               <div className="file-panel-footer"><button className="add-another" onClick={() => inputRef.current?.click()}><Plus size={16}/> Daha fazla dosya ekle</button>{readyCount > 0 && <button className="convert-all" onClick={() => files.filter(x => x.status === 'ready' && canConvert(x.file)).forEach(convert)}>Tümünü dönüştür <ArrowRight size={15}/></button>}</div>
             </div>}
-            <div className="converter-foot"><span><ShieldCheck size={15}/> Dosyalarınız cihazınızda kalır</span></div>
+            
           </div>
           <div className="hero-assurances"><span><CheckCircle2 size={15}/> Hesap gerekmez</span><span><CheckCircle2 size={15}/> Kurulum gerekmez</span><span><CheckCircle2 size={15}/> Gizliliğe öncelik</span></div>
         </div>
