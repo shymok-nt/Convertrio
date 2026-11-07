@@ -7,7 +7,8 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --max-warnings=0"
+    "lint": "eslint . --max-warnings=0",
+    "test:compat": "node scripts/check-zod-compat.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
