@@ -21,7 +21,7 @@ npm run build
 
 1. PNG, JPG veya WEBP görsellerinizi seçin veya sürükleyip bırakın (dosya başına en fazla 20 MB).
 2. **Arka planı kaldır** butonuna basın. İlk kullanımda WASM ve AI model dosyaları internetten indirilir.
-3. Orijinal/sonuç önizlemesini kontrol edin. Gerekirse **Kenar temizliği** kaydırıcısıyla kalan hafif izleri temizleyin, ardından şeffaf PNG'yi indirin.
+3. AI işleminin ardından çok düşük saydamlık izleri otomatik temizlenir. Sonuç önizlemesini kontrol edin ve şeffaf PNG'yi indirin.
 
 Birden fazla görsel sırayla işlenebilir. İşlem sırasında dosya kaldırma/temizleme kilitlenir.
 
