@@ -171,7 +171,7 @@ export default function App() {
                 <div className="preview-header"><h2>{latest.file.name}</h2><div className="preview-tabs" role="group" aria-label="Görsel önizleme"><button type="button" className={preview === 'original' ? 'active' : ''} onClick={() => setPreview('original')}>Orijinal</button><button type="button" className={preview === 'result' ? 'active' : ''} onClick={() => setPreview('result')} disabled={!latest.outputUrl}>Sonuç</button></div></div>
                 <div className="preview-canvas"><img src={preview === 'result' && latest.outputUrl ? latest.outputUrl : latest.originalUrl} alt={preview === 'result' && latest.outputUrl ? 'Arka planı kaldırılmış görsel' : 'Orijinal görsel'}/></div>
                 <div className="preview-action">
-                  {latest.outputUrl ? <a className="convert-button preview-download" href={latest.outputUrl} download={`${latest.file.name.replace(/\\.[^.]+$/, '')}-arkaplan-silindi.png`}><ArrowDownToLine size={17}/> Şeffaf PNG indir</a> : <button type="button" className="convert-button" disabled={working} onClick={removeBackgrounds}>{working ? 'İşleniyor…' : 'Arka planı kaldır'}</button>}
+                  {latest.outputUrl ? <a className="convert-button preview-download" href={latest.outputUrl} download={`${latest.file.name.replace(/\.[^.]+$/, '')}-arkaplan-silindi.png`}><ArrowDownToLine size={17}/> Şeffaf PNG indir</a> : <button type="button" className="convert-button" disabled={working} onClick={removeBackgrounds}>{working ? 'İşleniyor…' : 'Arka planı kaldır'}</button>}
                   <span aria-live="polite">{progress || (latest.state === 'error' ? latest.error : '')}</span>
                 </div>
               </div>}
