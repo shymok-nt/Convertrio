@@ -1,10 +1,10 @@
-# Convertrio
+# Convertrio — Tarayıcıda Arka Plan Silici
 
-Tek sayfalık, Türkçe, responsive dosya dönüştürücü arayüzü.
+Convertrio, görsellerin arka planını tarayıcı içinde AI ile kaldıran, Türkçe, responsive, tek sayfalık bir React uygulamasıdır.
 
-## Çalıştırma
+## Kurulum
 
-Node.js 20.19+ veya 22.12+ gerekir.
+Node.js 20.19+ veya 22.12+:
 
 ```bash
 npm install
@@ -17,29 +17,27 @@ npm run dev
 npm run build
 ```
 
-## Bu sürümde gerçekten desteklenen dönüşümler
+## Kullanım
 
-- PNG → JPG veya WEBP
-- JPG/JPEG → PNG veya WEBP
-- WEBP → PNG veya JPG
-- SVG → PNG, JPG veya WEBP
-- Aynı formatı yeniden dışa aktarma da mümkündür.
-- Birden fazla dosya sırayla dönüştürülür.
-- İndirme tamamlandığında dosya tarayıcı tarafından kaydedilebilir.
+1. PNG, JPG veya WEBP görsellerinizi seçin veya sürükleyip bırakın (dosya başına en fazla 20 MB).
+2. **Arka planı kaldır** butonuna basın. İlk kullanımda WASM ve AI model dosyaları internetten indirilir.
+3. Orijinal/sonuç önizlemesini kontrol edin ve şeffaf PNG dosyasını indirin.
 
-İşlem Canvas API ile tamamen tarayıcıda gerçekleşir. JPG saydamlığını desteklemediği için saydam alanlar beyaza dönüşür.
+Birden fazla görsel sırayla işlenebilir. İşlem sırasında dosya kaldırma/temizleme kilitlenir.
 
-## Henüz desteklenmeyenler
+## Teknoloji ve gizlilik
 
-Video, ses, belge (PDF/DOCX/XLSX), e-kitap ve arşiv dönüşümleri **henüz çalışmıyor**. Kullanıcıya bu formatlar için sahte işlem/indirme gösterilmez; desteklenmeyen giriş dosyaları açıklayıcı mesajla reddedilir.
+- React 19 + Vite 6 + CSS
+- [IMG.LY background-removal](https://github.com/imgly/background-removal-js) v1.7.0 ve ONNX Runtime Web
+- İşlem istemcinin tarayıcısında yapılır; görsel sunucuya yüklenmez.
+- Model ve WASM dosyaları ilk kullanımda IMG.LY CDN'inden alınır. Sonraki kullanımlar önbelleğe bağlıdır.
+- İlk indirme onlarca MB olabilir. Bellek veya tarayıcı uyumluluğu nedeniyle bazı görseller hata verebilir.
+- PNG saydamlığını korur; kesimin kalitesi AI modeline ve görsele göre değişir.
 
-## Dikkat edilmesi gerekenler
+## Lisans uyarısı
 
-- 2 GB üzerindeki dosyalar reddedilir; tarayıcı bellek/piksel limitleri çok daha küçük dosyaları etkileyebilir.
-- Tarayıcınız ilgili kaynak görseli açamıyorsa veya çıktı biçimini desteklemiyorsa işlem açıklayıcı hatayla durur.
-- Görseller sunucuya yüklenmez.
-- GitHub Actions üretim derlemesini kontrol eder; bu, tüm tarayıcı ve formatlarda uçtan uca fonksiyon testi yerine geçmez.
+Kullanılan `@imgly/background-removal` kütüphanesi **GNU AGPL** lisansı altındadır. Projeyi yayımlamadan veya ticari kullanımdan önce AGPL yükümlülüklerini değerlendirin. Ticari/kapalı kaynak bir kullanım düşünülüyorsa IMG.LY ile ayrı lisans koşulları görüşülmelidir. Ayrıntılar: [IMG.LY README / LICENSE](https://github.com/imgly/background-removal-js).
 
-## Teknoloji
+## Doğrulama
 
-React + Vite + CSS + Lucide React. Plus Jakarta Sans tipografi. Convertrio logo görseli kullanıcı tarafından sağlandı.
+GitHub Actions, Vite üretim derlemesini denetler. Üretim derlemesinin geçmesi, AI modelinin tüm tarayıcılarda gerçekten başarılı çalıştığını kanıtlamaz; gerçek dosyalarla tarayıcı üzerinde ayrıca test yapılmalıdır.
