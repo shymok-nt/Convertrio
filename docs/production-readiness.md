@@ -14,22 +14,20 @@ Denetim tarihi: 8 Kasım 2026. Kodun mevcut GitHub `main` dalı temel alınmış
 - `.env` ve `.env.*` Git tarafından yok sayılır; `.env.example` repoda kalır.
 - `VITE_*` ortam değişkenleri tarayıcıya dahil olabileceği için sır saklamak amacıyla kullanılmamalıdır. Mevcut projede sır içeren böyle bir değişken yok.
 
-## 2. npm audit — çözülmemiş riskler
+## 2. npm audit — giderilen güvenlik uyarıları
 
-GitHub Actions içinde `npm audit --audit-level=low` çalıştırıldı.
+GitHub Actions içinde `npm audit --audit-level=low` yeniden çalıştırıldı: **0 güvenlik açığı**.
 
-**Sonuç: 2 yüksek önem dereceli bağımlılık kaydı; tek kök zincir.**
-
-| Paket | Risk | Durum |
+| Paket | Önceki risk | Çözüm |
 |---|---|---|
-| `zod` (<4.6.6) | Aşırı büyük kısıtlanmış koleksiyonların doğrulanmasında bellek tüketimi, GHSA-mrhx-c7xc-m3w5 | Çözülmedi |
-| `@imgly/background-removal@1.7.0` | Etkilenen Zod sürümüne dolaylı bağımlılık | Çözülmedi |
+| `zod` (<4.6.6) | GHSA-mrhx-c7xc-m3w5: bellek tüketimi / hizmet reddi | IMG.LY alt bağımlılığı için `zod@^4.6.7` override |
+| `@imgly/background-removal@1.7.0` | Güvensiz Zod sürümüne dolaylı bağımlılık | Kütüphane sürümü korunarak `zod/v3` uyumluluk yolu kullanıldı |
 
-`npm audit`, `npm audit fix --force` ile `@imgly/background-removal` paketinin **1.1.5** sürümüne düşürülmesini öneriyor. Bu uyumsuz sürüm değişikliği mevcut AI işlemini bozabileceğinden uygulanmadı. Güvenli, davranışı koruyan düzeltme bu aşamada doğrulanamadı. Yayına alınmadan önce upstream düzeltmeleri takip edilmeli ve bağımlılıklar kontrollü test edilmelidir.
+IMG.LY 1.7.0, Zod 3 API'sindeki `z.function().args()` gibi çağrılara dayanır. Vite, `zod` importlarını Zod 4 paketinin `zod/v3` uyumluluk girişine yönlendirir. `npm run test:compat`, IMG.LY'nin kullandığı eski şema API'lerini test eder.
 
-Denetim adımı CI'da `continue-on-error` kullanır: kalite kontrollerinin durumu ve audit bulguları birbirinden ayrı gösterilir. **Başarılı build, güvenlik denetiminin geçtiği anlamına gelmez.**
+CI'da `lint`, `test:compat`, `build` ve `npm audit` adımları başarılıdır. Audit artık `continue-on-error` ile göz ardı edilmiyor; yeni bir açık tespit edilirse kontrol başarısız olur.
 
-Ek not: NPM kurulumunda eski ESLint 9 sürümünün artık desteklenmediğine ilişkin deprecation uyarısı görülebilir. ESLint 10'a geçiş test edilmediği için mevcut, çalışan yapı korunmuştur.
+**Sınır:** Derleme ve şema testi, gerçek AI modelinin her tarayıcı ve her görselle çalıştığını ispatlamaz. Gerçek görüntülerle uçtan uca tarayıcı testi yayın öncesinde yapılmalıdır.
 
 ## 3. SEO ve yönlendirme
 
@@ -61,5 +59,5 @@ Doğrudan HTML içine eklenen üçüncü taraf JavaScript `<script src="https://
 - Gerçek alan adı belirlendiğinde `example.com` değerlerini değiştir.
 - GitHub build/lint sonuçlarına ek olarak Android ve masaüstü tarayıcıda gerçek görsellerle uçtan uca test yap.
 - AGPL lisansının siteyi yayımlama koşullarını değerlendir.
-- Zod/IMG.LY güvenlik uyarısı için uyumlu düzeltme çıkınca regresyon testiyle yükseltme yap.
+- IMG.LY kütüphanesi resmi olarak Zod 4'ü desteklediğinde mevcut override/uyumluluk alias'ını yeniden değerlendir.
 - Vercel dağıtımı yapılınca 404 ve güvenlik başlıklarını canlı sunucuda doğrula.
